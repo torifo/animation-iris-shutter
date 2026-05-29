@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>アイリスシャッター遷移 — Animation Studies</title>
+  <meta name="description" content="多枚葉のカメラ絞り（アイリス）を SVG で再現したページ／ビュー遷移。閉じる → 中身差替 → 開く の 3 フェーズ。架空映像レーベル REEL ZERO の short film index で実用例を提示。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<header class="site">
+  <a class="back" href="../">
+    <span class="arrow">←</span>
+    <span>ANIMATION · INDEX</span>
+  </a>
+  <span class="cell-marker">IRIS SHUTTER</span>
+</header>
+
+<main>
+
+  <!-- ─── intro ─── -->
+  <section class="intro">
+    <span class="kicker">REEL ZERO · short film index</span>
+    <h1>Through<br/>the aperture.</h1>
+    <p class="lead">多枚葉のアイリス絞りが中央に閉じきり、作品が差し替わってから再び開く。シネマのシークエンスのように章送りを演出する遷移。サムネイル strip からの直接ジャンプ、← / → キー、PREV / NEXT のいずれでも操作できる。</p>
+  </section>
+
+  <!-- ─── The Reusable Component（多枚葉アイリス + シネマ・インデックス） ─── -->
+  <section class="reel"
+           data-iris
+           data-iris-blades="6"
+           data-iris-close="440"
+           data-iris-hold="120"
+           data-iris-open="520"
+           data-iris-stagger="32">
+
+    <!-- REEL ZERO 編集マスト -->
+    <header class="reel-masthead">
+      <div class="rz-mark">
+        <span class="rz-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="rz-name">REEL ZERO</span>
+        <span class="rz-sub">SHORT CINEMA · CURATED</span>
+      </div>
+      <div class="rz-edition">
+        <div><span class="rz-k">VOL</span><span class="rz-v">07</span></div>
+        <div><span class="rz-k">DATES</span><span class="rz-v">03&ndash;07 JUN 2026</span></div>
+        <div><span class="rz-k">VENUE</span><span class="rz-v">EUROLIVE · SHIBUYA</span></div>
+      </div>
+    </header>
+
+    <!-- 黒ステージ：iris SVG はここに JS が挿入 -->
+    <div class="reel-stage">
+
+      <!-- 上のステータスバー -->
+      <div class="reel-topbar">
+        <span class="reel-section">INDEX / SELECTION</span>
+        <span class="reel-progress" aria-hidden="true">
+          <span class="rp-track"><i data-progress-bar></i></span>
+          <span class="reel-counter">
+            <em data-counter-current>01</em>
+            <span class="rc-slash">/</span>
+            <span data-counter-total>04</span>
+          </span>
+        </span>
+      </div>
+
+      <!-- 入れ替わる中身 -->
+      <div class="reel-frame" data-iris-target>
+
+        <!-- ══════════ 01 ══════════ -->
+        <article class="film is-active" data-film="0">
+
+          <div class="film-visual">
+            <div class="film-still still--01" aria-hidden="true">
+              <div class="s-sky"></div>
+              <div class="s-sun"></div>
+              <div class="s-horizon"></div>
+              <div class="s-water"></div>
+              <div class="s-mounds"></div>
+              <div class="still-vignette"></div>
+              <div class="still-grain"></div>
+            </div>
+            <div class="film-stamp">
+              <span class="fs-no">FILM&nbsp;01</span>
+              <span class="fs-dur">14:21</span>
+              <span class="fs-format">16mm · 4:3</span>
+            </div>
+            <span class="still-caption">塩田 / 19:42 — exterior</span>
+          </div>
+
+          <div class="film-text">
+            <span class="film-no">F · 01</span>
+            <h2 class="film-title" data-reveal>Salt Hour</h2>
+            <p class="film-byline">a film by <strong>Hana Aoki</strong></p>
+            <p class="film-synopsis" data-reveal-stagger>瀬戸内の塩田に夜が降りる一時間。蒸発と結晶、潮位、遠雷。光が抜けたあとの白さだけが残る、観察の映画。</p>
+
+            <div class="film-grid">
+              <section class="film-credits">
+                <h4>CREDITS</h4>
+                <dl>
+                  <dt>Director</dt><dd>Hana Aoki</dd>
+                  <dt>Cinematography</dt><dd>Yui Tanaka</dd>
+                  <dt>Sound</dt><dd>Kenji Mori</dd>
+                  <dt>Editor</dt><dd>Hana Aoki</dd>
+                </dl>
+              </section>
+              <section class="film-schedule">
+                <h4>SCREENINGS</h4>
+                <ul>
+                  <li><span class="sch-date">03 JUN · 19:00</span><span class="sch-room">HALL&nbsp;A</span><span class="sch-status status--avail">OPEN</span></li>
+                  <li><span class="sch-date">05 JUN · 14:30</span><span class="sch-room">HALL&nbsp;B</span><span class="sch-status status--few">FEW</span></li>
+                  <li><span class="sch-date">07 JUN · 21:00</span><span class="sch-room">HALL&nbsp;A</span><span class="sch-status status--sold">SOLD</span></li>
+                </ul>
+              </section>
+            </div>
+
+            <div class="film-awards">
+              <span>OSAKA SHORTS · OFFICIAL SELECTION</span>
+              <span>BERLIN INDIE FORUM · NOMINEE</span>
+            </div>
+
+            <div class="film-cta">
+              <button class="cta cta--solid" type="button">PLAY&nbsp;TRAILER <span class="cta-arrow">→</span></button>
+              <button class="cta" type="button">TICKETS</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- ══════════ 02 ══════════ -->
+        <article class="film" data-film="1">
+
+          <div class="film-visual">
+            <div class="film-still still--02" aria-hidden="true">
+              <div class="s-tunnel"></div>
+              <div class="s-floor"></div>
+              <div class="s-lamp"></div>
+              <div class="s-cone"></div>
+              <div class="s-dust"></div>
+              <div class="still-vignette"></div>
+              <div class="still-grain"></div>
+            </div>
+            <div class="film-stamp">
+              <span class="fs-no">FILM&nbsp;02</span>
+              <span class="fs-dur">22:08</span>
+              <span class="fs-format">digital · 2.39:1</span>
+            </div>
+            <span class="still-caption">旧 神田駅 / 04:11 — interior</span>
+          </div>
+
+          <div class="film-text">
+            <span class="film-no">F · 02</span>
+            <h2 class="film-title" data-reveal>Echo Chamber</h2>
+            <p class="film-byline">a film by <strong>Marcus Vale</strong></p>
+            <p class="film-synopsis" data-reveal-stagger>廃線になった地下鉄駅で響く声を採集する音響技師の数日。空間が音を覚えているのか、人間が空間に音を貸しているのか。</p>
+
+            <div class="film-grid">
+              <section class="film-credits">
+                <h4>CREDITS</h4>
+                <dl>
+                  <dt>Director</dt><dd>Marcus Vale</dd>
+                  <dt>Sound Design</dt><dd>Vale&nbsp;/&nbsp;A. Lindqvist</dd>
+                  <dt>Cinematography</dt><dd>Iliya Petrov</dd>
+                  <dt>Producer</dt><dd>NORTH BAY FILMS</dd>
+                </dl>
+              </section>
+              <section class="film-schedule">
+                <h4>SCREENINGS</h4>
+                <ul>
+                  <li><span class="sch-date">04 JUN · 17:30</span><span class="sch-room">HALL&nbsp;B</span><span class="sch-status status--avail">OPEN</span></li>
+                  <li><span class="sch-date">06 JUN · 20:00</span><span class="sch-room">HALL&nbsp;A</span><span class="sch-status status--few">FEW</span></li>
+                  <li><span class="sch-date">07 JUN · 13:15</span><span class="sch-room">HALL&nbsp;C</span><span class="sch-status status--avail">OPEN</span></li>
+                </ul>
+              </section>
+            </div>
+
+            <div class="film-awards">
+              <span>ROTTERDAM IFF · TIGER COMPETITION</span>
+              <span>SOUND ART AWARD · WINNER</span>
+            </div>
+
+            <div class="film-cta">
+              <button class="cta cta--solid" type="button">PLAY&nbsp;TRAILER <span class="cta-arrow">→</span></button>
+              <button class="cta" type="button">TICKETS</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- ══════════ 03 ══════════ -->
+        <article class="film" data-film="2">
+
+          <div class="film-visual">
+            <div class="film-still still--03" aria-hidden="true">
+              <div class="s-room"></div>
+              <div class="s-counter"></div>
+              <div class="s-window"></div>
+              <div class="s-beam"></div>
+              <div class="s-steam"></div>
+              <div class="still-vignette"></div>
+              <div class="still-grain"></div>
+            </div>
+            <div class="film-stamp">
+              <span class="fs-no">FILM&nbsp;03</span>
+              <span class="fs-dur">18:34</span>
+              <span class="fs-format">digital · 16:9</span>
+            </div>
+            <span class="still-caption">石川県珠洲市 / 07:30 — kitchen</span>
+          </div>
+
+          <div class="film-text">
+            <span class="film-no">F · 03</span>
+            <h2 class="film-title" data-reveal>Mother Tongue</h2>
+            <p class="film-byline">a film by <strong>Rin Sato</strong></p>
+            <p class="film-synopsis" data-reveal-stagger>祖母と孫娘、三世代を経て薄れていく方言の輪郭。台所で交わされる単語の音色を、字幕なしで記録した家族のポートレート。</p>
+
+            <div class="film-grid">
+              <section class="film-credits">
+                <h4>CREDITS</h4>
+                <dl>
+                  <dt>Director</dt><dd>Rin Sato</dd>
+                  <dt>Cinematography</dt><dd>Kaoru Endo</dd>
+                  <dt>Editor</dt><dd>Yuna Park</dd>
+                  <dt>Producer</dt><dd>WAKO STUDIOS</dd>
+                </dl>
+              </section>
+              <section class="film-schedule">
+                <h4>SCREENINGS</h4>
+                <ul>
+                  <li><span class="sch-date">03 JUN · 14:00</span><span class="sch-room">HALL&nbsp;C</span><span class="sch-status status--sold">SOLD</span></li>
+                  <li><span class="sch-date">05 JUN · 19:30</span><span class="sch-room">HALL&nbsp;A</span><span class="sch-status status--few">FEW</span></li>
+                  <li><span class="sch-date">07 JUN · 11:00</span><span class="sch-room">HALL&nbsp;B</span><span class="sch-status status--avail">OPEN</span></li>
+                </ul>
+              </section>
+            </div>
+
+            <div class="film-awards">
+              <span>YAMAGATA DOC · NEW ASIAN CURRENTS</span>
+              <span>TOKYO FILMeX · SPECIAL MENTION</span>
+            </div>
+
+            <div class="film-cta">
+              <button class="cta cta--solid" type="button">PLAY&nbsp;TRAILER <span class="cta-arrow">→</span></button>
+              <button class="cta" type="button">TICKETS</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- ══════════ 04 ══════════ -->
+        <article class="film" data-film="3">
+
+          <div class="film-visual">
+            <div class="film-still still--04" aria-hidden="true">
+              <div class="s-crt"></div>
+              <div class="s-static"></div>
+              <div class="s-scan"></div>
+              <div class="s-curve"></div>
+              <div class="s-channel">CH 03 · 06:48 · TUE</div>
+              <div class="still-vignette"></div>
+              <div class="still-grain"></div>
+            </div>
+            <div class="film-stamp">
+              <span class="fs-no">FILM&nbsp;04</span>
+              <span class="fs-dur">09:00</span>
+              <span class="fs-format">VHS · CRT</span>
+            </div>
+            <span class="still-caption">Malmö / 06:48 — receiver</span>
+          </div>
+
+          <div class="film-text">
+            <span class="film-no">F · 04</span>
+            <h2 class="film-title" data-reveal>After the Rain,<br/>Static</h2>
+            <p class="film-byline">a film by <strong>Theo Lindberg</strong></p>
+            <p class="film-synopsis" data-reveal-stagger>スウェーデンの郊外で、嵐の翌朝にだけ受信できる海賊放送のチャンネル。9 分間のノイズと声の収集。映写ではなく受信の映画。</p>
+
+            <div class="film-grid">
+              <section class="film-credits">
+                <h4>CREDITS</h4>
+                <dl>
+                  <dt>Director</dt><dd>Theo Lindberg</dd>
+                  <dt>Sound</dt><dd>S. Eriksson</dd>
+                  <dt>Editor</dt><dd>Theo Lindberg</dd>
+                  <dt>Producer</dt><dd>MALMÖ FRAMES</dd>
+                </dl>
+              </section>
+              <section class="film-schedule">
+                <h4>SCREENINGS</h4>
+                <ul>
+                  <li><span class="sch-date">04 JUN · 13:00</span><span class="sch-room">HALL&nbsp;C</span><span class="sch-status status--avail">OPEN</span></li>
+                  <li><span class="sch-date">06 JUN · 16:45</span><span class="sch-room">HALL&nbsp;B</span><span class="sch-status status--avail">OPEN</span></li>
+                  <li><span class="sch-date">07 JUN · 22:30</span><span class="sch-room">HALL&nbsp;A</span><span class="sch-status status--few">FEW</span></li>
+                </ul>
+              </section>
+            </div>
+
+            <div class="film-awards">
+              <span>OBERHAUSEN · EXPERIMENTAL</span>
+              <span>NORDIC INDIE PRESS · BEST SHORT</span>
+            </div>
+
+            <div class="film-cta">
+              <button class="cta cta--solid" type="button">PLAY&nbsp;TRAILER <span class="cta-arrow">→</span></button>
+              <button class="cta" type="button">TICKETS</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- ── 下部：サムネイル strip + 操作 ── -->
+      <nav class="reel-thumbs" aria-label="film index">
+        <button class="thumb is-active" type="button" data-film-idx="0" aria-label="Film 01 — Salt Hour">
+          <span class="th-still th-still--01" aria-hidden="true"></span>
+          <span class="th-text">
+            <span class="th-no">01</span>
+            <span class="th-title">Salt Hour</span>
+            <span class="th-meta">H. AOKI · 14′</span>
+          </span>
+        </button>
+        <button class="thumb" type="button" data-film-idx="1" aria-label="Film 02 — Echo Chamber">
+          <span class="th-still th-still--02" aria-hidden="true"></span>
+          <span class="th-text">
+            <span class="th-no">02</span>
+            <span class="th-title">Echo&nbsp;Chamber</span>
+            <span class="th-meta">M. VALE · 22′</span>
+          </span>
+        </button>
+        <button class="thumb" type="button" data-film-idx="2" aria-label="Film 03 — Mother Tongue">
+          <span class="th-still th-still--03" aria-hidden="true"></span>
+          <span class="th-text">
+            <span class="th-no">03</span>
+            <span class="th-title">Mother&nbsp;Tongue</span>
+            <span class="th-meta">R. SATO · 18′</span>
+          </span>
+        </button>
+        <button class="thumb" type="button" data-film-idx="3" aria-label="Film 04 — After the Rain, Static">
+          <span class="th-still th-still--04" aria-hidden="true"></span>
+          <span class="th-text">
+            <span class="th-no">04</span>
+            <span class="th-title">After the Rain</span>
+            <span class="th-meta">T. LINDBERG · 9′</span>
+          </span>
+        </button>
+      </nav>
+
+      <div class="reel-controls">
+        <button class="rn-btn" type="button" data-iris-prev aria-label="Previous film">
+          <span class="rn-arrow">←</span>
+          <span class="rn-label">PREV</span>
+        </button>
+        <span class="reel-hint">← / → · click thumb to jump</span>
+        <button class="rn-btn rn-btn--next" type="button" data-iris-next aria-label="Next film">
+          <span class="rn-label">NEXT</span>
+          <span class="rn-arrow">→</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- フッターメタ -->
+    <footer class="reel-foot">
+      <span>© REEL ZERO 2026 — curated short cinema</span>
+      <span>PRESS · press@reelzero.example</span>
+    </footer>
+
+  </section>
+
+  <!-- ─── Usage notes ─── -->
+  <section class="notes">
+    <div class="shou"><h2>使い方</h2><span class="no">— USAGE</span></div>
+    <p class="frame">↑ 想定：ギャラリー／作品インデックス／ケーススタディ／章送り。「閉じる → 中身差替 → 開く」の 3 フェーズが <strong>区切り</strong> として強く、見ているものが切り替わったことを言葉なく伝える。</p>
+
+    <div class="notes-grid">
+      <div class="note">
+        <span class="note-no">01</span>
+        <h3>2 ファイルをコピー</h3>
+        <p><code>style.css</code> の <code>/* ─── COMPONENT ─── */</code> ブロックと、<code>script.js</code> の IIFE 全体を移植先へ。外部依存ゼロ、SVG だけ。</p>
+      </div>
+      <div class="note">
+        <span class="note-no">02</span>
+        <h3>data-iris で宣言</h3>
+        <p>ルートに <code>data-iris</code>、入れ替わる領域に <code>data-iris-target</code> を付ければ自動初期化。<code>data-iris-blades</code>（葉枚数）、<code>data-iris-close</code> / <code>-hold</code> / <code>-open</code> / <code>-stagger</code> でリズムを調整。</p>
+      </div>
+      <div class="note">
+        <span class="note-no">03</span>
+        <h3>transition(swap) API</h3>
+        <p>JS から <code>el._iris.transition(() =&gt; swap())</code> を呼ぶと、close 完了時点で <code>swap</code> が走り、その後 open。route 切替などに直接組み込める。</p>
+      </div>
+    </div>
+
+    <h3 class="sub-h">CSS 変数</h3>
+    <div class="vars">
+      <div class="var"><code>--iris-blade</code><span>絞り blade の色（閉じきった画面色）</span><em>#0a0a0a</em></div>
+      <div class="var"><code>--iris-edge</code><span>blade 同士の境界に薄く差すハイライト</span><em>rgba(255,255,255,.04)</em></div>
+      <div class="var"><code>--iris-ease</code><span>各 blade の easing</span><em>cubic-bezier(.7,.0,.2,1)</em></div>
+    </div>
+
+    <h3 class="sub-h">アクセシビリティ</h3>
+    <ul class="a11y">
+      <li><code>prefers-reduced-motion: reduce</code> 時は blade の回転を止め、フェードでの切替に置き換える。</li>
+      <li>prev / next は <code>&lt;button&gt;</code>、キーボード <code>← / →</code> 同等。サムネイル strip も <code>&lt;button&gt;</code> で直接ジャンプ可。</li>
+      <li>遷移中は次の入力を無視（連打で多重実行しない）。ボタンに <code>aria-label</code>、SVG に <code>aria-hidden</code>。</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <span>© 2026 ANIMATION DESIGN STUDY</span>
+  <a href="../">← INDEX</a>
+</footer>
+
+<script src="./script.js"></script>
+</body>
+</html>

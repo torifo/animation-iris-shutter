@@ -14,6 +14,23 @@
 | 依存 | なし（Pure HTML + CSS + Vanilla JS、SVG のみ） |
 | 推奨配置 | 作品インデックス／章送り／ギャラリー切替／ケーススタディ |
 
+
+## スキルとして導入 / Install as a skill
+
+このリポジトリは Claude Code / Codex CLI 共通の **`SKILL.md`**（オープン標準）を同梱しており、AI エージェントのスキルとして使えます。リポジトリ自体をスキルディレクトリへリンクするだけです。
+
+This repo ships a cross-agent **`SKILL.md`** (open standard) usable by both Claude Code and Codex CLI. Just link the repo into the agent's skills directory.
+
+```bash
+# Claude Code
+ln -s "$(pwd)" ~/.claude/skills/anim-iris-shutter
+# Codex CLI
+ln -s "$(pwd)" ~/.codex/skills/anim-iris-shutter
+```
+
+エージェントを再起動すると `description` に基づき自動でマッチします（スキル名: `anim-iris-shutter`）。
+Restart the agent; it is matched automatically by the skill's `description` (skill name: `anim-iris-shutter`).
+
 ## 仕組み（3 フェーズ）
 
 | フェーズ | blade の回転 | 中身 |
